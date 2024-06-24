@@ -300,6 +300,14 @@ template <typename FF> std::vector<std::string> AvmFullRow<FF>::names()
              "pedersen_input",
              "pedersen_output",
              "pedersen_sel_pedersen",
+             "poseidon2_a_0",
+             "poseidon2_a_1",
+             "poseidon2_a_2",
+             "poseidon2_a_3",
+             "poseidon2_b_0",
+             "poseidon2_b_1",
+             "poseidon2_b_2",
+             "poseidon2_b_3",
              "poseidon2_clk",
              "poseidon2_input",
              "poseidon2_output",
@@ -563,7 +571,11 @@ template <typename FF> std::ostream& operator<<(std::ostream& os, AvmFullRow<FF>
            << field_to_string(row.mem_tsp) << "," << field_to_string(row.mem_val) << ","
            << field_to_string(row.mem_w_in_tag) << "," << field_to_string(row.pedersen_clk) << ","
            << field_to_string(row.pedersen_input) << "," << field_to_string(row.pedersen_output) << ","
-           << field_to_string(row.pedersen_sel_pedersen) << "," << field_to_string(row.poseidon2_clk) << ","
+           << field_to_string(row.pedersen_sel_pedersen) << "," << field_to_string(row.poseidon2_a_0) << ","
+           << field_to_string(row.poseidon2_a_1) << "," << field_to_string(row.poseidon2_a_2) << ","
+           << field_to_string(row.poseidon2_a_3) << "," << field_to_string(row.poseidon2_b_0) << ","
+           << field_to_string(row.poseidon2_b_1) << "," << field_to_string(row.poseidon2_b_2) << ","
+           << field_to_string(row.poseidon2_b_3) << "," << field_to_string(row.poseidon2_clk) << ","
            << field_to_string(row.poseidon2_input) << "," << field_to_string(row.poseidon2_output) << ","
            << field_to_string(row.poseidon2_sel_poseidon_perm) << "," << field_to_string(row.powers_power_of_2) << ","
            << field_to_string(row.sha256_clk) << "," << field_to_string(row.sha256_input) << ","

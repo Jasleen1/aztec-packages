@@ -505,6 +505,14 @@ bool AvmVerifier::verify_proof(const HonkProof& proof, const std::vector<std::ve
         transcript->template receive_from_prover<Commitment>(commitment_labels.pedersen_output);
     commitments.pedersen_sel_pedersen =
         transcript->template receive_from_prover<Commitment>(commitment_labels.pedersen_sel_pedersen);
+    commitments.poseidon2_a_0 = transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_a_0);
+    commitments.poseidon2_a_1 = transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_a_1);
+    commitments.poseidon2_a_2 = transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_a_2);
+    commitments.poseidon2_a_3 = transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_a_3);
+    commitments.poseidon2_b_0 = transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_b_0);
+    commitments.poseidon2_b_1 = transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_b_1);
+    commitments.poseidon2_b_2 = transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_b_2);
+    commitments.poseidon2_b_3 = transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_b_3);
     commitments.poseidon2_clk = transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_clk);
     commitments.poseidon2_input =
         transcript->template receive_from_prover<Commitment>(commitment_labels.poseidon2_input);

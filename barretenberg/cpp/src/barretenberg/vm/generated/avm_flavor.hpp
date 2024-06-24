@@ -100,11 +100,27 @@ class AvmFlavor {
     using RelationSeparator = FF;
 
     static constexpr size_t NUM_PRECOMPUTED_ENTITIES = 2;
+<<<<<<< HEAD
     static constexpr size_t NUM_WITNESS_ENTITIES = 385;
     static constexpr size_t NUM_WIRES = NUM_WITNESS_ENTITIES + NUM_PRECOMPUTED_ENTITIES;
     // We have two copies of the witness entities, so we subtract the number of fixed ones (they have no shift), one for
     // the unshifted and one for the shifted
     static constexpr size_t NUM_ALL_ENTITIES = 452;
+=======
+<<<<<<< HEAD
+    static constexpr size_t NUM_WITNESS_ENTITIES = 384;
+    static constexpr size_t NUM_WIRES = NUM_WITNESS_ENTITIES + NUM_PRECOMPUTED_ENTITIES;
+    // We have two copies of the witness entities, so we subtract the number of fixed ones (they have no shift), one for
+    // the unshifted and one for the shifted
+    static constexpr size_t NUM_ALL_ENTITIES = 451;
+=======
+    static constexpr size_t NUM_WITNESS_ENTITIES = 391;
+    static constexpr size_t NUM_WIRES = NUM_WITNESS_ENTITIES + NUM_PRECOMPUTED_ENTITIES;
+    // We have two copies of the witness entities, so we subtract the number of fixed ones (they have no shift), one for
+    // the unshifted and one for the shifted
+    static constexpr size_t NUM_ALL_ENTITIES = 458;
+>>>>>>> 91347fba1 (feat(avm): poseidon2 constraints)
+>>>>>>> dfd3ca77d (feat(avm): poseidon2 constraints)
 
     using GrandProductRelations = std::tuple<perm_main_alu_relation<FF>,
                                              perm_main_bin_relation<FF>,
@@ -540,6 +556,14 @@ class AvmFlavor {
                               pedersen_input,
                               pedersen_output,
                               pedersen_sel_pedersen,
+                              poseidon2_a_0,
+                              poseidon2_a_1,
+                              poseidon2_a_2,
+                              poseidon2_a_3,
+                              poseidon2_b_0,
+                              poseidon2_b_1,
+                              poseidon2_b_2,
+                              poseidon2_b_3,
                               poseidon2_clk,
                               poseidon2_input,
                               poseidon2_output,
@@ -928,6 +952,14 @@ class AvmFlavor {
                      pedersen_input,
                      pedersen_output,
                      pedersen_sel_pedersen,
+                     poseidon2_a_0,
+                     poseidon2_a_1,
+                     poseidon2_a_2,
+                     poseidon2_a_3,
+                     poseidon2_b_0,
+                     poseidon2_b_1,
+                     poseidon2_b_2,
+                     poseidon2_b_3,
                      poseidon2_clk,
                      poseidon2_input,
                      poseidon2_output,
@@ -1321,6 +1353,14 @@ class AvmFlavor {
                               pedersen_input,
                               pedersen_output,
                               pedersen_sel_pedersen,
+                              poseidon2_a_0,
+                              poseidon2_a_1,
+                              poseidon2_a_2,
+                              poseidon2_a_3,
+                              poseidon2_b_0,
+                              poseidon2_b_1,
+                              poseidon2_b_2,
+                              poseidon2_b_3,
                               poseidon2_clk,
                               poseidon2_input,
                               poseidon2_output,
@@ -1776,6 +1816,14 @@ class AvmFlavor {
                      pedersen_input,
                      pedersen_output,
                      pedersen_sel_pedersen,
+                     poseidon2_a_0,
+                     poseidon2_a_1,
+                     poseidon2_a_2,
+                     poseidon2_a_3,
+                     poseidon2_b_0,
+                     poseidon2_b_1,
+                     poseidon2_b_2,
+                     poseidon2_b_3,
                      poseidon2_clk,
                      poseidon2_input,
                      poseidon2_output,
@@ -2231,6 +2279,14 @@ class AvmFlavor {
                      pedersen_input,
                      pedersen_output,
                      pedersen_sel_pedersen,
+                     poseidon2_a_0,
+                     poseidon2_a_1,
+                     poseidon2_a_2,
+                     poseidon2_a_3,
+                     poseidon2_b_0,
+                     poseidon2_b_1,
+                     poseidon2_b_2,
+                     poseidon2_b_3,
                      poseidon2_clk,
                      poseidon2_input,
                      poseidon2_output,
@@ -3042,6 +3098,14 @@ class AvmFlavor {
             Base::pedersen_input = "PEDERSEN_INPUT";
             Base::pedersen_output = "PEDERSEN_OUTPUT";
             Base::pedersen_sel_pedersen = "PEDERSEN_SEL_PEDERSEN";
+            Base::poseidon2_a_0 = "POSEIDON2_A_0";
+            Base::poseidon2_a_1 = "POSEIDON2_A_1";
+            Base::poseidon2_a_2 = "POSEIDON2_A_2";
+            Base::poseidon2_a_3 = "POSEIDON2_A_3";
+            Base::poseidon2_b_0 = "POSEIDON2_B_0";
+            Base::poseidon2_b_1 = "POSEIDON2_B_1";
+            Base::poseidon2_b_2 = "POSEIDON2_B_2";
+            Base::poseidon2_b_3 = "POSEIDON2_B_3";
             Base::poseidon2_clk = "POSEIDON2_CLK";
             Base::poseidon2_input = "POSEIDON2_INPUT";
             Base::poseidon2_output = "POSEIDON2_OUTPUT";
@@ -3446,6 +3510,14 @@ class AvmFlavor {
         Commitment pedersen_input;
         Commitment pedersen_output;
         Commitment pedersen_sel_pedersen;
+        Commitment poseidon2_a_0;
+        Commitment poseidon2_a_1;
+        Commitment poseidon2_a_2;
+        Commitment poseidon2_a_3;
+        Commitment poseidon2_b_0;
+        Commitment poseidon2_b_1;
+        Commitment poseidon2_b_2;
+        Commitment poseidon2_b_3;
         Commitment poseidon2_clk;
         Commitment poseidon2_input;
         Commitment poseidon2_output;
@@ -3862,6 +3934,14 @@ class AvmFlavor {
             pedersen_input = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             pedersen_output = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             pedersen_sel_pedersen = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            poseidon2_a_0 = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            poseidon2_a_1 = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            poseidon2_a_2 = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            poseidon2_a_3 = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            poseidon2_b_0 = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            poseidon2_b_1 = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            poseidon2_b_2 = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            poseidon2_b_3 = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             poseidon2_clk = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             poseidon2_input = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             poseidon2_output = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
@@ -4270,6 +4350,14 @@ class AvmFlavor {
             serialize_to_buffer<Commitment>(pedersen_input, Transcript::proof_data);
             serialize_to_buffer<Commitment>(pedersen_output, Transcript::proof_data);
             serialize_to_buffer<Commitment>(pedersen_sel_pedersen, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(poseidon2_a_0, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(poseidon2_a_1, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(poseidon2_a_2, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(poseidon2_a_3, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(poseidon2_b_0, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(poseidon2_b_1, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(poseidon2_b_2, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(poseidon2_b_3, Transcript::proof_data);
             serialize_to_buffer<Commitment>(poseidon2_clk, Transcript::proof_data);
             serialize_to_buffer<Commitment>(poseidon2_input, Transcript::proof_data);
             serialize_to_buffer<Commitment>(poseidon2_output, Transcript::proof_data);

@@ -290,6 +290,14 @@
     [[maybe_unused]] auto pedersen_input = View(new_term.pedersen_input);                                              \
     [[maybe_unused]] auto pedersen_output = View(new_term.pedersen_output);                                            \
     [[maybe_unused]] auto pedersen_sel_pedersen = View(new_term.pedersen_sel_pedersen);                                \
+    [[maybe_unused]] auto poseidon2_a_0 = View(new_term.poseidon2_a_0);                                                \
+    [[maybe_unused]] auto poseidon2_a_1 = View(new_term.poseidon2_a_1);                                                \
+    [[maybe_unused]] auto poseidon2_a_2 = View(new_term.poseidon2_a_2);                                                \
+    [[maybe_unused]] auto poseidon2_a_3 = View(new_term.poseidon2_a_3);                                                \
+    [[maybe_unused]] auto poseidon2_b_0 = View(new_term.poseidon2_b_0);                                                \
+    [[maybe_unused]] auto poseidon2_b_1 = View(new_term.poseidon2_b_1);                                                \
+    [[maybe_unused]] auto poseidon2_b_2 = View(new_term.poseidon2_b_2);                                                \
+    [[maybe_unused]] auto poseidon2_b_3 = View(new_term.poseidon2_b_3);                                                \
     [[maybe_unused]] auto poseidon2_clk = View(new_term.poseidon2_clk);                                                \
     [[maybe_unused]] auto poseidon2_input = View(new_term.poseidon2_input);                                            \
     [[maybe_unused]] auto poseidon2_output = View(new_term.poseidon2_output);                                          \

@@ -369,6 +369,14 @@ template <typename FF> struct AvmFullRow {
     FF pedersen_input{};
     FF pedersen_output{};
     FF pedersen_sel_pedersen{};
+    FF poseidon2_a_0{};
+    FF poseidon2_a_1{};
+    FF poseidon2_a_2{};
+    FF poseidon2_a_3{};
+    FF poseidon2_b_0{};
+    FF poseidon2_b_1{};
+    FF poseidon2_b_2{};
+    FF poseidon2_b_3{};
     FF poseidon2_clk{};
     FF poseidon2_input{};
     FF poseidon2_output{};
@@ -555,8 +563,18 @@ class AvmCircuitBuilder {
     using Polynomial = Flavor::Polynomial;
     using ProverPolynomials = Flavor::ProverPolynomials;
 
+<<<<<<< HEAD
     static constexpr size_t num_fixed_columns = 452;
     static constexpr size_t num_polys = 387;
+=======
+<<<<<<< HEAD
+    static constexpr size_t num_fixed_columns = 451;
+    static constexpr size_t num_polys = 386;
+=======
+    static constexpr size_t num_fixed_columns = 458;
+    static constexpr size_t num_polys = 393;
+>>>>>>> 91347fba1 (feat(avm): poseidon2 constraints)
+>>>>>>> dfd3ca77d (feat(avm): poseidon2 constraints)
     std::vector<Row> rows;
 
     void set_trace(std::vector<Row>&& trace) { rows = std::move(trace); }
@@ -855,6 +873,14 @@ class AvmCircuitBuilder {
             polys.pedersen_input[i] = rows[i].pedersen_input;
             polys.pedersen_output[i] = rows[i].pedersen_output;
             polys.pedersen_sel_pedersen[i] = rows[i].pedersen_sel_pedersen;
+            polys.poseidon2_a_0[i] = rows[i].poseidon2_a_0;
+            polys.poseidon2_a_1[i] = rows[i].poseidon2_a_1;
+            polys.poseidon2_a_2[i] = rows[i].poseidon2_a_2;
+            polys.poseidon2_a_3[i] = rows[i].poseidon2_a_3;
+            polys.poseidon2_b_0[i] = rows[i].poseidon2_b_0;
+            polys.poseidon2_b_1[i] = rows[i].poseidon2_b_1;
+            polys.poseidon2_b_2[i] = rows[i].poseidon2_b_2;
+            polys.poseidon2_b_3[i] = rows[i].poseidon2_b_3;
             polys.poseidon2_clk[i] = rows[i].poseidon2_clk;
             polys.poseidon2_input[i] = rows[i].poseidon2_input;
             polys.poseidon2_output[i] = rows[i].poseidon2_output;
