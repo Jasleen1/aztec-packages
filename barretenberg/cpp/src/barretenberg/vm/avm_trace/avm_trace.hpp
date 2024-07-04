@@ -16,6 +16,7 @@
 #include "barretenberg/vm/avm_trace/gadgets/avm_pedersen.hpp"
 #include "barretenberg/vm/avm_trace/gadgets/avm_poseidon2.hpp"
 #include "barretenberg/vm/avm_trace/gadgets/avm_sha256.hpp"
+#include "barretenberg/vm/avm_trace/gadgets/avm_slice_trace.hpp"
 #include "barretenberg/vm/generated/avm_circuit_builder.hpp"
 
 namespace bb::avm_trace {
@@ -186,6 +187,7 @@ class AvmTraceBuilder {
     AvmKeccakTraceBuilder keccak_trace_builder;
     AvmPedersenTraceBuilder pedersen_trace_builder;
     AvmEccTraceBuilder ecc_trace_builder;
+    AvmSliceTraceBuilder slice_trace_builder;
 
     std::vector<FF> calldata{};
 
