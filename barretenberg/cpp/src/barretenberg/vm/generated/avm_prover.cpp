@@ -72,11 +72,13 @@ void AvmProver::execute_log_derivative_inverse_round()
     key->compute_logderivative_inverses(relation_parameters);
 
     // Commit to all logderivative inverse polynomials
+    witness_commitments.perm_cd_mem = commitment_key->commit(key->perm_cd_mem);
     witness_commitments.perm_main_alu = commitment_key->commit(key->perm_main_alu);
     witness_commitments.perm_main_bin = commitment_key->commit(key->perm_main_bin);
     witness_commitments.perm_main_conv = commitment_key->commit(key->perm_main_conv);
     witness_commitments.perm_main_pos2_perm = commitment_key->commit(key->perm_main_pos2_perm);
     witness_commitments.perm_main_pedersen = commitment_key->commit(key->perm_main_pedersen);
+    witness_commitments.perm_main_cd_copy = commitment_key->commit(key->perm_main_cd_copy);
     witness_commitments.perm_main_mem_a = commitment_key->commit(key->perm_main_mem_a);
     witness_commitments.perm_main_mem_b = commitment_key->commit(key->perm_main_mem_b);
     witness_commitments.perm_main_mem_c = commitment_key->commit(key->perm_main_mem_c);
@@ -87,6 +89,7 @@ void AvmProver::execute_log_derivative_inverse_round()
     witness_commitments.perm_main_mem_ind_addr_d = commitment_key->commit(key->perm_main_mem_ind_addr_d);
     witness_commitments.lookup_byte_lengths = commitment_key->commit(key->lookup_byte_lengths);
     witness_commitments.lookup_byte_operations = commitment_key->commit(key->lookup_byte_operations);
+    witness_commitments.lookup_cd_value = commitment_key->commit(key->lookup_cd_value);
     witness_commitments.lookup_opcode_gas = commitment_key->commit(key->lookup_opcode_gas);
     witness_commitments.range_check_l2_gas_hi = commitment_key->commit(key->range_check_l2_gas_hi);
     witness_commitments.range_check_l2_gas_lo = commitment_key->commit(key->range_check_l2_gas_lo);
@@ -128,11 +131,13 @@ void AvmProver::execute_log_derivative_inverse_round()
     witness_commitments.lookup_div_u16_7 = commitment_key->commit(key->lookup_div_u16_7);
 
     // Send all commitments to the verifier
+    transcript->send_to_verifier(commitment_labels.perm_cd_mem, witness_commitments.perm_cd_mem);
     transcript->send_to_verifier(commitment_labels.perm_main_alu, witness_commitments.perm_main_alu);
     transcript->send_to_verifier(commitment_labels.perm_main_bin, witness_commitments.perm_main_bin);
     transcript->send_to_verifier(commitment_labels.perm_main_conv, witness_commitments.perm_main_conv);
     transcript->send_to_verifier(commitment_labels.perm_main_pos2_perm, witness_commitments.perm_main_pos2_perm);
     transcript->send_to_verifier(commitment_labels.perm_main_pedersen, witness_commitments.perm_main_pedersen);
+    transcript->send_to_verifier(commitment_labels.perm_main_cd_copy, witness_commitments.perm_main_cd_copy);
     transcript->send_to_verifier(commitment_labels.perm_main_mem_a, witness_commitments.perm_main_mem_a);
     transcript->send_to_verifier(commitment_labels.perm_main_mem_b, witness_commitments.perm_main_mem_b);
     transcript->send_to_verifier(commitment_labels.perm_main_mem_c, witness_commitments.perm_main_mem_c);
@@ -147,6 +152,7 @@ void AvmProver::execute_log_derivative_inverse_round()
                                  witness_commitments.perm_main_mem_ind_addr_d);
     transcript->send_to_verifier(commitment_labels.lookup_byte_lengths, witness_commitments.lookup_byte_lengths);
     transcript->send_to_verifier(commitment_labels.lookup_byte_operations, witness_commitments.lookup_byte_operations);
+    transcript->send_to_verifier(commitment_labels.lookup_cd_value, witness_commitments.lookup_cd_value);
     transcript->send_to_verifier(commitment_labels.lookup_opcode_gas, witness_commitments.lookup_opcode_gas);
     transcript->send_to_verifier(commitment_labels.range_check_l2_gas_hi, witness_commitments.range_check_l2_gas_hi);
     transcript->send_to_verifier(commitment_labels.range_check_l2_gas_lo, witness_commitments.range_check_l2_gas_lo);

@@ -195,6 +195,7 @@ template <typename FF> struct AvmFullRow {
     FF main_rwd{};
     FF main_sel_alu{};
     FF main_sel_bin{};
+    FF main_sel_cd{};
     FF main_sel_gas_accounting_active{};
     FF main_sel_last{};
     FF main_sel_mem_op_a{};
@@ -208,6 +209,7 @@ template <typename FF> struct AvmFullRow {
     FF main_sel_op_address{};
     FF main_sel_op_and{};
     FF main_sel_op_block_number{};
+    FF main_sel_op_calldata_copy{};
     FF main_sel_op_cast{};
     FF main_sel_op_chain_id{};
     FF main_sel_op_cmov{};
@@ -284,6 +286,7 @@ template <typename FF> struct AvmFullRow {
     FF mem_sel_op_a{};
     FF mem_sel_op_b{};
     FF mem_sel_op_c{};
+    FF mem_sel_op_cd{};
     FF mem_sel_op_cmov{};
     FF mem_sel_op_d{};
     FF mem_sel_resolve_ind_addr_a{};
@@ -312,11 +315,22 @@ template <typename FF> struct AvmFullRow {
     FF sha256_output{};
     FF sha256_sel_sha256_compression{};
     FF sha256_state{};
+    FF slice_addr{};
+    FF slice_cd_offset{};
+    FF slice_clk{};
+    FF slice_cnt{};
+    FF slice_one_min_inv{};
+    FF slice_sel_cd{};
+    FF slice_sel_start_cd{};
+    FF slice_space_id{};
+    FF slice_val{};
+    FF perm_cd_mem{};
     FF perm_main_alu{};
     FF perm_main_bin{};
     FF perm_main_conv{};
     FF perm_main_pos2_perm{};
     FF perm_main_pedersen{};
+    FF perm_main_cd_copy{};
     FF perm_main_mem_a{};
     FF perm_main_mem_b{};
     FF perm_main_mem_c{};
@@ -327,6 +341,7 @@ template <typename FF> struct AvmFullRow {
     FF perm_main_mem_ind_addr_d{};
     FF lookup_byte_lengths{};
     FF lookup_byte_operations{};
+    FF lookup_cd_value{};
     FF lookup_opcode_gas{};
     FF range_check_l2_gas_hi{};
     FF range_check_l2_gas_lo{};
@@ -368,6 +383,7 @@ template <typename FF> struct AvmFullRow {
     FF lookup_div_u16_7{};
     FF lookup_byte_lengths_counts{};
     FF lookup_byte_operations_counts{};
+    FF lookup_cd_value_counts{};
     FF lookup_opcode_gas_counts{};
     FF range_check_l2_gas_hi_counts{};
     FF range_check_l2_gas_lo_counts{};
@@ -423,8 +439,8 @@ class AvmCircuitBuilder {
     using Polynomial = Flavor::Polynomial;
     using ProverPolynomials = Flavor::ProverPolynomials;
 
-    static constexpr size_t num_fixed_columns = 387;
-    static constexpr size_t num_polys = 387 + 65;
+    static constexpr size_t num_fixed_columns = 403;
+    static constexpr size_t num_polys = 403 + 68;
     std::vector<Row> rows;
 
     void set_trace(std::vector<Row>&& trace) { rows = std::move(trace); }
@@ -616,6 +632,7 @@ class AvmCircuitBuilder {
             polys.main_rwd[i] = rows[i].main_rwd;
             polys.main_sel_alu[i] = rows[i].main_sel_alu;
             polys.main_sel_bin[i] = rows[i].main_sel_bin;
+            polys.main_sel_cd[i] = rows[i].main_sel_cd;
             polys.main_sel_gas_accounting_active[i] = rows[i].main_sel_gas_accounting_active;
             polys.main_sel_last[i] = rows[i].main_sel_last;
             polys.main_sel_mem_op_a[i] = rows[i].main_sel_mem_op_a;
@@ -629,6 +646,7 @@ class AvmCircuitBuilder {
             polys.main_sel_op_address[i] = rows[i].main_sel_op_address;
             polys.main_sel_op_and[i] = rows[i].main_sel_op_and;
             polys.main_sel_op_block_number[i] = rows[i].main_sel_op_block_number;
+            polys.main_sel_op_calldata_copy[i] = rows[i].main_sel_op_calldata_copy;
             polys.main_sel_op_cast[i] = rows[i].main_sel_op_cast;
             polys.main_sel_op_chain_id[i] = rows[i].main_sel_op_chain_id;
             polys.main_sel_op_cmov[i] = rows[i].main_sel_op_cmov;
@@ -705,6 +723,7 @@ class AvmCircuitBuilder {
             polys.mem_sel_op_a[i] = rows[i].mem_sel_op_a;
             polys.mem_sel_op_b[i] = rows[i].mem_sel_op_b;
             polys.mem_sel_op_c[i] = rows[i].mem_sel_op_c;
+            polys.mem_sel_op_cd[i] = rows[i].mem_sel_op_cd;
             polys.mem_sel_op_cmov[i] = rows[i].mem_sel_op_cmov;
             polys.mem_sel_op_d[i] = rows[i].mem_sel_op_d;
             polys.mem_sel_resolve_ind_addr_a[i] = rows[i].mem_sel_resolve_ind_addr_a;
@@ -733,8 +752,18 @@ class AvmCircuitBuilder {
             polys.sha256_output[i] = rows[i].sha256_output;
             polys.sha256_sel_sha256_compression[i] = rows[i].sha256_sel_sha256_compression;
             polys.sha256_state[i] = rows[i].sha256_state;
+            polys.slice_addr[i] = rows[i].slice_addr;
+            polys.slice_cd_offset[i] = rows[i].slice_cd_offset;
+            polys.slice_clk[i] = rows[i].slice_clk;
+            polys.slice_cnt[i] = rows[i].slice_cnt;
+            polys.slice_one_min_inv[i] = rows[i].slice_one_min_inv;
+            polys.slice_sel_cd[i] = rows[i].slice_sel_cd;
+            polys.slice_sel_start_cd[i] = rows[i].slice_sel_start_cd;
+            polys.slice_space_id[i] = rows[i].slice_space_id;
+            polys.slice_val[i] = rows[i].slice_val;
             polys.lookup_byte_lengths_counts[i] = rows[i].lookup_byte_lengths_counts;
             polys.lookup_byte_operations_counts[i] = rows[i].lookup_byte_operations_counts;
+            polys.lookup_cd_value_counts[i] = rows[i].lookup_cd_value_counts;
             polys.lookup_opcode_gas_counts[i] = rows[i].lookup_opcode_gas_counts;
             polys.range_check_l2_gas_hi_counts[i] = rows[i].range_check_l2_gas_hi_counts;
             polys.range_check_l2_gas_lo_counts[i] = rows[i].range_check_l2_gas_lo_counts;
@@ -847,6 +876,9 @@ class AvmCircuitBuilder {
         polys.mem_tag_shift = Polynomial(polys.mem_tag.shifted());
         polys.mem_tsp_shift = Polynomial(polys.mem_tsp.shifted());
         polys.mem_val_shift = Polynomial(polys.mem_val.shifted());
+        polys.slice_addr_shift = Polynomial(polys.slice_addr.shifted());
+        polys.slice_cd_offset_shift = Polynomial(polys.slice_cd_offset.shifted());
+        polys.slice_cnt_shift = Polynomial(polys.slice_cnt.shifted());
 
         return polys;
     }
@@ -946,6 +978,10 @@ class AvmCircuitBuilder {
         auto mem = [=]() {
             return evaluate_relation.template operator()<Avm_vm::mem<FF>>("mem", Avm_vm::get_relation_label_mem);
         };
+        auto mem_slice = [=]() {
+            return evaluate_relation.template operator()<Avm_vm::mem_slice<FF>>("mem_slice",
+                                                                                Avm_vm::get_relation_label_mem_slice);
+        };
         auto pedersen = [=]() {
             return evaluate_relation.template operator()<Avm_vm::pedersen<FF>>("pedersen",
                                                                                Avm_vm::get_relation_label_pedersen);
@@ -964,6 +1000,9 @@ class AvmCircuitBuilder {
         };
 
         // Check lookups
+        auto perm_cd_mem = [=]() {
+            return evaluate_logderivative.template operator()<perm_cd_mem_relation<FF>>("PERM_CD_MEM");
+        };
         auto perm_main_alu = [=]() {
             return evaluate_logderivative.template operator()<perm_main_alu_relation<FF>>("PERM_MAIN_ALU");
         };
@@ -978,6 +1017,9 @@ class AvmCircuitBuilder {
         };
         auto perm_main_pedersen = [=]() {
             return evaluate_logderivative.template operator()<perm_main_pedersen_relation<FF>>("PERM_MAIN_PEDERSEN");
+        };
+        auto perm_main_cd_copy = [=]() {
+            return evaluate_logderivative.template operator()<perm_main_cd_copy_relation<FF>>("PERM_MAIN_CD_COPY");
         };
         auto perm_main_mem_a = [=]() {
             return evaluate_logderivative.template operator()<perm_main_mem_a_relation<FF>>("PERM_MAIN_MEM_A");
@@ -1013,6 +1055,9 @@ class AvmCircuitBuilder {
         auto lookup_byte_operations = [=]() {
             return evaluate_logderivative.template operator()<lookup_byte_operations_relation<FF>>(
                 "LOOKUP_BYTE_OPERATIONS");
+        };
+        auto lookup_cd_value = [=]() {
+            return evaluate_logderivative.template operator()<lookup_cd_value_relation<FF>>("LOOKUP_CD_VALUE");
         };
         auto lookup_opcode_gas = [=]() {
             return evaluate_logderivative.template operator()<lookup_opcode_gas_relation<FF>>("LOOKUP_OPCODE_GAS");
@@ -1151,15 +1196,18 @@ class AvmCircuitBuilder {
         relation_futures.emplace_back(std::async(std::launch::async, kernel));
         relation_futures.emplace_back(std::async(std::launch::async, main));
         relation_futures.emplace_back(std::async(std::launch::async, mem));
+        relation_futures.emplace_back(std::async(std::launch::async, mem_slice));
         relation_futures.emplace_back(std::async(std::launch::async, pedersen));
         relation_futures.emplace_back(std::async(std::launch::async, poseidon2));
         relation_futures.emplace_back(std::async(std::launch::async, powers));
         relation_futures.emplace_back(std::async(std::launch::async, sha256));
+        relation_futures.emplace_back(std::async(std::launch::async, perm_cd_mem));
         relation_futures.emplace_back(std::async(std::launch::async, perm_main_alu));
         relation_futures.emplace_back(std::async(std::launch::async, perm_main_bin));
         relation_futures.emplace_back(std::async(std::launch::async, perm_main_conv));
         relation_futures.emplace_back(std::async(std::launch::async, perm_main_pos2_perm));
         relation_futures.emplace_back(std::async(std::launch::async, perm_main_pedersen));
+        relation_futures.emplace_back(std::async(std::launch::async, perm_main_cd_copy));
         relation_futures.emplace_back(std::async(std::launch::async, perm_main_mem_a));
         relation_futures.emplace_back(std::async(std::launch::async, perm_main_mem_b));
         relation_futures.emplace_back(std::async(std::launch::async, perm_main_mem_c));
@@ -1170,6 +1218,7 @@ class AvmCircuitBuilder {
         relation_futures.emplace_back(std::async(std::launch::async, perm_main_mem_ind_addr_d));
         relation_futures.emplace_back(std::async(std::launch::async, lookup_byte_lengths));
         relation_futures.emplace_back(std::async(std::launch::async, lookup_byte_operations));
+        relation_futures.emplace_back(std::async(std::launch::async, lookup_cd_value));
         relation_futures.emplace_back(std::async(std::launch::async, lookup_opcode_gas));
         relation_futures.emplace_back(std::async(std::launch::async, range_check_l2_gas_hi));
         relation_futures.emplace_back(std::async(std::launch::async, range_check_l2_gas_lo));

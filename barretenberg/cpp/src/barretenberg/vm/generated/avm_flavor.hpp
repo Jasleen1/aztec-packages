@@ -23,6 +23,7 @@
 #include "barretenberg/relations/generated/avm/kernel.hpp"
 #include "barretenberg/relations/generated/avm/main.hpp"
 #include "barretenberg/relations/generated/avm/mem.hpp"
+#include "barretenberg/relations/generated/avm/mem_slice.hpp"
 #include "barretenberg/relations/generated/avm/pedersen.hpp"
 #include "barretenberg/relations/generated/avm/poseidon2.hpp"
 #include "barretenberg/relations/generated/avm/powers.hpp"
@@ -34,6 +35,7 @@
 #include "barretenberg/relations/generated/avm/kernel_output_lookup.hpp"
 #include "barretenberg/relations/generated/avm/lookup_byte_lengths.hpp"
 #include "barretenberg/relations/generated/avm/lookup_byte_operations.hpp"
+#include "barretenberg/relations/generated/avm/lookup_cd_value.hpp"
 #include "barretenberg/relations/generated/avm/lookup_div_u16_0.hpp"
 #include "barretenberg/relations/generated/avm/lookup_div_u16_1.hpp"
 #include "barretenberg/relations/generated/avm/lookup_div_u16_2.hpp"
@@ -66,8 +68,10 @@
 #include "barretenberg/relations/generated/avm/lookup_u16_9.hpp"
 #include "barretenberg/relations/generated/avm/lookup_u8_0.hpp"
 #include "barretenberg/relations/generated/avm/lookup_u8_1.hpp"
+#include "barretenberg/relations/generated/avm/perm_cd_mem.hpp"
 #include "barretenberg/relations/generated/avm/perm_main_alu.hpp"
 #include "barretenberg/relations/generated/avm/perm_main_bin.hpp"
+#include "barretenberg/relations/generated/avm/perm_main_cd_copy.hpp"
 #include "barretenberg/relations/generated/avm/perm_main_conv.hpp"
 #include "barretenberg/relations/generated/avm/perm_main_mem_a.hpp"
 #include "barretenberg/relations/generated/avm/perm_main_mem_b.hpp"
@@ -104,11 +108,11 @@ class AvmFlavor {
     using RelationSeparator = FF;
 
     static constexpr size_t NUM_PRECOMPUTED_ENTITIES = 2;
-    static constexpr size_t NUM_WITNESS_ENTITIES = 385;
+    static constexpr size_t NUM_WITNESS_ENTITIES = 401;
     static constexpr size_t NUM_WIRES = NUM_WITNESS_ENTITIES + NUM_PRECOMPUTED_ENTITIES;
     // We have two copies of the witness entities, so we subtract the number of fixed ones (they have no shift), one for
     // the unshifted and one for the shifted
-    static constexpr size_t NUM_ALL_ENTITIES = 452;
+    static constexpr size_t NUM_ALL_ENTITIES = 471;
 
     using Relations = std::tuple<
         // Relations
@@ -120,16 +124,19 @@ class AvmFlavor {
         Avm_vm::kernel<FF>,
         Avm_vm::main<FF>,
         Avm_vm::mem<FF>,
+        Avm_vm::mem_slice<FF>,
         Avm_vm::pedersen<FF>,
         Avm_vm::poseidon2<FF>,
         Avm_vm::powers<FF>,
         Avm_vm::sha256<FF>,
         // Lookups
+        perm_cd_mem_relation<FF>,
         perm_main_alu_relation<FF>,
         perm_main_bin_relation<FF>,
         perm_main_conv_relation<FF>,
         perm_main_pos2_perm_relation<FF>,
         perm_main_pedersen_relation<FF>,
+        perm_main_cd_copy_relation<FF>,
         perm_main_mem_a_relation<FF>,
         perm_main_mem_b_relation<FF>,
         perm_main_mem_c_relation<FF>,
@@ -140,6 +147,7 @@ class AvmFlavor {
         perm_main_mem_ind_addr_d_relation<FF>,
         lookup_byte_lengths_relation<FF>,
         lookup_byte_operations_relation<FF>,
+        lookup_cd_value_relation<FF>,
         lookup_opcode_gas_relation<FF>,
         range_check_l2_gas_hi_relation<FF>,
         range_check_l2_gas_lo_relation<FF>,
@@ -385,6 +393,7 @@ class AvmFlavor {
                               main_rwd,
                               main_sel_alu,
                               main_sel_bin,
+                              main_sel_cd,
                               main_sel_gas_accounting_active,
                               main_sel_last,
                               main_sel_mem_op_a,
@@ -398,6 +407,7 @@ class AvmFlavor {
                               main_sel_op_address,
                               main_sel_op_and,
                               main_sel_op_block_number,
+                              main_sel_op_calldata_copy,
                               main_sel_op_cast,
                               main_sel_op_chain_id,
                               main_sel_op_cmov,
@@ -474,6 +484,7 @@ class AvmFlavor {
                               mem_sel_op_a,
                               mem_sel_op_b,
                               mem_sel_op_c,
+                              mem_sel_op_cd,
                               mem_sel_op_cmov,
                               mem_sel_op_d,
                               mem_sel_resolve_ind_addr_a,
@@ -502,8 +513,18 @@ class AvmFlavor {
                               sha256_output,
                               sha256_sel_sha256_compression,
                               sha256_state,
+                              slice_addr,
+                              slice_cd_offset,
+                              slice_clk,
+                              slice_cnt,
+                              slice_one_min_inv,
+                              slice_sel_cd,
+                              slice_sel_start_cd,
+                              slice_space_id,
+                              slice_val,
                               lookup_byte_lengths_counts,
                               lookup_byte_operations_counts,
+                              lookup_cd_value_counts,
                               lookup_opcode_gas_counts,
                               range_check_l2_gas_hi_counts,
                               range_check_l2_gas_lo_counts,
@@ -548,11 +569,13 @@ class AvmFlavor {
     template <typename DataType> class DerivedWitnessEntities {
       public:
         DEFINE_FLAVOR_MEMBERS(DataType,
+                              perm_cd_mem,
                               perm_main_alu,
                               perm_main_bin,
                               perm_main_conv,
                               perm_main_pos2_perm,
                               perm_main_pedersen,
+                              perm_main_cd_copy,
                               perm_main_mem_a,
                               perm_main_mem_b,
                               perm_main_mem_c,
@@ -563,6 +586,7 @@ class AvmFlavor {
                               perm_main_mem_ind_addr_d,
                               lookup_byte_lengths,
                               lookup_byte_operations,
+                              lookup_cd_value,
                               lookup_opcode_gas,
                               range_check_l2_gas_hi,
                               range_check_l2_gas_lo,
@@ -671,7 +695,10 @@ class AvmFlavor {
                               mem_sel_mem_shift,
                               mem_tag_shift,
                               mem_tsp_shift,
-                              mem_val_shift)
+                              mem_val_shift,
+                              slice_addr_shift,
+                              slice_cd_offset_shift,
+                              slice_cnt_shift)
     };
 
     template <typename DataType, typename PrecomputedAndWitnessEntitiesSuperset>
@@ -741,7 +768,10 @@ class AvmFlavor {
                          entities.mem_sel_mem,
                          entities.mem_tag,
                          entities.mem_tsp,
-                         entities.mem_val };
+                         entities.mem_val,
+                         entities.slice_addr,
+                         entities.slice_cd_offset,
+                         entities.slice_cnt };
     }
 
     template <typename DataType>
@@ -847,13 +877,19 @@ class AvmFlavor {
                      mem_sel_mem,
                      mem_tag,
                      mem_tsp,
-                     mem_val };
+                     mem_val,
+                     slice_addr,
+                     slice_cd_offset,
+                     slice_cnt };
         }
 
         void compute_logderivative_inverses(const RelationParameters<FF>& relation_parameters)
         {
             ProverPolynomials prover_polynomials = ProverPolynomials(*this);
 
+            AVM_TRACK_TIME("compute_logderivative_inverse/perm_cd_mem_ms",
+                           (bb::compute_logderivative_inverse<AvmFlavor, perm_cd_mem_relation<FF>>(
+                               prover_polynomials, relation_parameters, this->circuit_size)));
             AVM_TRACK_TIME("compute_logderivative_inverse/perm_main_alu_ms",
                            (bb::compute_logderivative_inverse<AvmFlavor, perm_main_alu_relation<FF>>(
                                prover_polynomials, relation_parameters, this->circuit_size)));
@@ -868,6 +904,9 @@ class AvmFlavor {
                                prover_polynomials, relation_parameters, this->circuit_size)));
             AVM_TRACK_TIME("compute_logderivative_inverse/perm_main_pedersen_ms",
                            (bb::compute_logderivative_inverse<AvmFlavor, perm_main_pedersen_relation<FF>>(
+                               prover_polynomials, relation_parameters, this->circuit_size)));
+            AVM_TRACK_TIME("compute_logderivative_inverse/perm_main_cd_copy_ms",
+                           (bb::compute_logderivative_inverse<AvmFlavor, perm_main_cd_copy_relation<FF>>(
                                prover_polynomials, relation_parameters, this->circuit_size)));
             AVM_TRACK_TIME("compute_logderivative_inverse/perm_main_mem_a_ms",
                            (bb::compute_logderivative_inverse<AvmFlavor, perm_main_mem_a_relation<FF>>(
@@ -898,6 +937,9 @@ class AvmFlavor {
                                prover_polynomials, relation_parameters, this->circuit_size)));
             AVM_TRACK_TIME("compute_logderivative_inverse/lookup_byte_operations_ms",
                            (bb::compute_logderivative_inverse<AvmFlavor, lookup_byte_operations_relation<FF>>(
+                               prover_polynomials, relation_parameters, this->circuit_size)));
+            AVM_TRACK_TIME("compute_logderivative_inverse/lookup_cd_value_ms",
+                           (bb::compute_logderivative_inverse<AvmFlavor, lookup_cd_value_relation<FF>>(
                                prover_polynomials, relation_parameters, this->circuit_size)));
             AVM_TRACK_TIME("compute_logderivative_inverse/lookup_opcode_gas_ms",
                            (bb::compute_logderivative_inverse<AvmFlavor, lookup_opcode_gas_relation<FF>>(
@@ -1287,6 +1329,7 @@ class AvmFlavor {
             Base::main_rwd = "MAIN_RWD";
             Base::main_sel_alu = "MAIN_SEL_ALU";
             Base::main_sel_bin = "MAIN_SEL_BIN";
+            Base::main_sel_cd = "MAIN_SEL_CD";
             Base::main_sel_gas_accounting_active = "MAIN_SEL_GAS_ACCOUNTING_ACTIVE";
             Base::main_sel_last = "MAIN_SEL_LAST";
             Base::main_sel_mem_op_a = "MAIN_SEL_MEM_OP_A";
@@ -1300,6 +1343,7 @@ class AvmFlavor {
             Base::main_sel_op_address = "MAIN_SEL_OP_ADDRESS";
             Base::main_sel_op_and = "MAIN_SEL_OP_AND";
             Base::main_sel_op_block_number = "MAIN_SEL_OP_BLOCK_NUMBER";
+            Base::main_sel_op_calldata_copy = "MAIN_SEL_OP_CALLDATA_COPY";
             Base::main_sel_op_cast = "MAIN_SEL_OP_CAST";
             Base::main_sel_op_chain_id = "MAIN_SEL_OP_CHAIN_ID";
             Base::main_sel_op_cmov = "MAIN_SEL_OP_CMOV";
@@ -1376,6 +1420,7 @@ class AvmFlavor {
             Base::mem_sel_op_a = "MEM_SEL_OP_A";
             Base::mem_sel_op_b = "MEM_SEL_OP_B";
             Base::mem_sel_op_c = "MEM_SEL_OP_C";
+            Base::mem_sel_op_cd = "MEM_SEL_OP_CD";
             Base::mem_sel_op_cmov = "MEM_SEL_OP_CMOV";
             Base::mem_sel_op_d = "MEM_SEL_OP_D";
             Base::mem_sel_resolve_ind_addr_a = "MEM_SEL_RESOLVE_IND_ADDR_A";
@@ -1404,11 +1449,22 @@ class AvmFlavor {
             Base::sha256_output = "SHA256_OUTPUT";
             Base::sha256_sel_sha256_compression = "SHA256_SEL_SHA256_COMPRESSION";
             Base::sha256_state = "SHA256_STATE";
+            Base::slice_addr = "SLICE_ADDR";
+            Base::slice_cd_offset = "SLICE_CD_OFFSET";
+            Base::slice_clk = "SLICE_CLK";
+            Base::slice_cnt = "SLICE_CNT";
+            Base::slice_one_min_inv = "SLICE_ONE_MIN_INV";
+            Base::slice_sel_cd = "SLICE_SEL_CD";
+            Base::slice_sel_start_cd = "SLICE_SEL_START_CD";
+            Base::slice_space_id = "SLICE_SPACE_ID";
+            Base::slice_val = "SLICE_VAL";
+            Base::perm_cd_mem = "PERM_CD_MEM";
             Base::perm_main_alu = "PERM_MAIN_ALU";
             Base::perm_main_bin = "PERM_MAIN_BIN";
             Base::perm_main_conv = "PERM_MAIN_CONV";
             Base::perm_main_pos2_perm = "PERM_MAIN_POS2_PERM";
             Base::perm_main_pedersen = "PERM_MAIN_PEDERSEN";
+            Base::perm_main_cd_copy = "PERM_MAIN_CD_COPY";
             Base::perm_main_mem_a = "PERM_MAIN_MEM_A";
             Base::perm_main_mem_b = "PERM_MAIN_MEM_B";
             Base::perm_main_mem_c = "PERM_MAIN_MEM_C";
@@ -1419,6 +1475,7 @@ class AvmFlavor {
             Base::perm_main_mem_ind_addr_d = "PERM_MAIN_MEM_IND_ADDR_D";
             Base::lookup_byte_lengths = "LOOKUP_BYTE_LENGTHS";
             Base::lookup_byte_operations = "LOOKUP_BYTE_OPERATIONS";
+            Base::lookup_cd_value = "LOOKUP_CD_VALUE";
             Base::lookup_opcode_gas = "LOOKUP_OPCODE_GAS";
             Base::range_check_l2_gas_hi = "RANGE_CHECK_L2_GAS_HI";
             Base::range_check_l2_gas_lo = "RANGE_CHECK_L2_GAS_LO";
@@ -1460,6 +1517,7 @@ class AvmFlavor {
             Base::lookup_div_u16_7 = "LOOKUP_DIV_U16_7";
             Base::lookup_byte_lengths_counts = "LOOKUP_BYTE_LENGTHS_COUNTS";
             Base::lookup_byte_operations_counts = "LOOKUP_BYTE_OPERATIONS_COUNTS";
+            Base::lookup_cd_value_counts = "LOOKUP_CD_VALUE_COUNTS";
             Base::lookup_opcode_gas_counts = "LOOKUP_OPCODE_GAS_COUNTS";
             Base::range_check_l2_gas_hi_counts = "RANGE_CHECK_L2_GAS_HI_COUNTS";
             Base::range_check_l2_gas_lo_counts = "RANGE_CHECK_L2_GAS_LO_COUNTS";
@@ -1691,6 +1749,7 @@ class AvmFlavor {
         Commitment main_rwd;
         Commitment main_sel_alu;
         Commitment main_sel_bin;
+        Commitment main_sel_cd;
         Commitment main_sel_gas_accounting_active;
         Commitment main_sel_last;
         Commitment main_sel_mem_op_a;
@@ -1704,6 +1763,7 @@ class AvmFlavor {
         Commitment main_sel_op_address;
         Commitment main_sel_op_and;
         Commitment main_sel_op_block_number;
+        Commitment main_sel_op_calldata_copy;
         Commitment main_sel_op_cast;
         Commitment main_sel_op_chain_id;
         Commitment main_sel_op_cmov;
@@ -1780,6 +1840,7 @@ class AvmFlavor {
         Commitment mem_sel_op_a;
         Commitment mem_sel_op_b;
         Commitment mem_sel_op_c;
+        Commitment mem_sel_op_cd;
         Commitment mem_sel_op_cmov;
         Commitment mem_sel_op_d;
         Commitment mem_sel_resolve_ind_addr_a;
@@ -1808,11 +1869,22 @@ class AvmFlavor {
         Commitment sha256_output;
         Commitment sha256_sel_sha256_compression;
         Commitment sha256_state;
+        Commitment slice_addr;
+        Commitment slice_cd_offset;
+        Commitment slice_clk;
+        Commitment slice_cnt;
+        Commitment slice_one_min_inv;
+        Commitment slice_sel_cd;
+        Commitment slice_sel_start_cd;
+        Commitment slice_space_id;
+        Commitment slice_val;
+        Commitment perm_cd_mem;
         Commitment perm_main_alu;
         Commitment perm_main_bin;
         Commitment perm_main_conv;
         Commitment perm_main_pos2_perm;
         Commitment perm_main_pedersen;
+        Commitment perm_main_cd_copy;
         Commitment perm_main_mem_a;
         Commitment perm_main_mem_b;
         Commitment perm_main_mem_c;
@@ -1823,6 +1895,7 @@ class AvmFlavor {
         Commitment perm_main_mem_ind_addr_d;
         Commitment lookup_byte_lengths;
         Commitment lookup_byte_operations;
+        Commitment lookup_cd_value;
         Commitment lookup_opcode_gas;
         Commitment range_check_l2_gas_hi;
         Commitment range_check_l2_gas_lo;
@@ -1864,6 +1937,7 @@ class AvmFlavor {
         Commitment lookup_div_u16_7;
         Commitment lookup_byte_lengths_counts;
         Commitment lookup_byte_operations_counts;
+        Commitment lookup_cd_value_counts;
         Commitment lookup_opcode_gas_counts;
         Commitment range_check_l2_gas_hi_counts;
         Commitment range_check_l2_gas_lo_counts;
@@ -2105,6 +2179,7 @@ class AvmFlavor {
             main_rwd = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_alu = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_bin = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            main_sel_cd = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_gas_accounting_active = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_last = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_mem_op_a = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
@@ -2118,6 +2193,7 @@ class AvmFlavor {
             main_sel_op_address = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_op_and = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_op_block_number = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            main_sel_op_calldata_copy = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_op_cast = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_op_chain_id = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             main_sel_op_cmov = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
@@ -2196,6 +2272,7 @@ class AvmFlavor {
             mem_sel_op_a = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             mem_sel_op_b = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             mem_sel_op_c = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            mem_sel_op_cd = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             mem_sel_op_cmov = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             mem_sel_op_d = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             mem_sel_resolve_ind_addr_a = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
@@ -2224,11 +2301,22 @@ class AvmFlavor {
             sha256_output = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             sha256_sel_sha256_compression = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             sha256_state = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            slice_addr = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            slice_cd_offset = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            slice_clk = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            slice_cnt = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            slice_one_min_inv = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            slice_sel_cd = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            slice_sel_start_cd = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            slice_space_id = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            slice_val = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            perm_cd_mem = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             perm_main_alu = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             perm_main_bin = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             perm_main_conv = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             perm_main_pos2_perm = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             perm_main_pedersen = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            perm_main_cd_copy = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             perm_main_mem_a = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             perm_main_mem_b = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             perm_main_mem_c = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
@@ -2239,6 +2327,7 @@ class AvmFlavor {
             perm_main_mem_ind_addr_d = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             lookup_byte_lengths = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             lookup_byte_operations = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            lookup_cd_value = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             lookup_opcode_gas = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             range_check_l2_gas_hi = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             range_check_l2_gas_lo = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
@@ -2280,6 +2369,7 @@ class AvmFlavor {
             lookup_div_u16_7 = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             lookup_byte_lengths_counts = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             lookup_byte_operations_counts = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
+            lookup_cd_value_counts = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             lookup_opcode_gas_counts = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             range_check_l2_gas_hi_counts = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
             range_check_l2_gas_lo_counts = deserialize_from_buffer<Commitment>(Transcript::proof_data, num_frs_read);
@@ -2515,6 +2605,7 @@ class AvmFlavor {
             serialize_to_buffer<Commitment>(main_rwd, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_alu, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_bin, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(main_sel_cd, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_gas_accounting_active, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_last, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_mem_op_a, Transcript::proof_data);
@@ -2528,6 +2619,7 @@ class AvmFlavor {
             serialize_to_buffer<Commitment>(main_sel_op_address, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_op_and, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_op_block_number, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(main_sel_op_calldata_copy, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_op_cast, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_op_chain_id, Transcript::proof_data);
             serialize_to_buffer<Commitment>(main_sel_op_cmov, Transcript::proof_data);
@@ -2604,6 +2696,7 @@ class AvmFlavor {
             serialize_to_buffer<Commitment>(mem_sel_op_a, Transcript::proof_data);
             serialize_to_buffer<Commitment>(mem_sel_op_b, Transcript::proof_data);
             serialize_to_buffer<Commitment>(mem_sel_op_c, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(mem_sel_op_cd, Transcript::proof_data);
             serialize_to_buffer<Commitment>(mem_sel_op_cmov, Transcript::proof_data);
             serialize_to_buffer<Commitment>(mem_sel_op_d, Transcript::proof_data);
             serialize_to_buffer<Commitment>(mem_sel_resolve_ind_addr_a, Transcript::proof_data);
@@ -2632,11 +2725,22 @@ class AvmFlavor {
             serialize_to_buffer<Commitment>(sha256_output, Transcript::proof_data);
             serialize_to_buffer<Commitment>(sha256_sel_sha256_compression, Transcript::proof_data);
             serialize_to_buffer<Commitment>(sha256_state, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(slice_addr, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(slice_cd_offset, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(slice_clk, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(slice_cnt, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(slice_one_min_inv, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(slice_sel_cd, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(slice_sel_start_cd, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(slice_space_id, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(slice_val, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(perm_cd_mem, Transcript::proof_data);
             serialize_to_buffer<Commitment>(perm_main_alu, Transcript::proof_data);
             serialize_to_buffer<Commitment>(perm_main_bin, Transcript::proof_data);
             serialize_to_buffer<Commitment>(perm_main_conv, Transcript::proof_data);
             serialize_to_buffer<Commitment>(perm_main_pos2_perm, Transcript::proof_data);
             serialize_to_buffer<Commitment>(perm_main_pedersen, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(perm_main_cd_copy, Transcript::proof_data);
             serialize_to_buffer<Commitment>(perm_main_mem_a, Transcript::proof_data);
             serialize_to_buffer<Commitment>(perm_main_mem_b, Transcript::proof_data);
             serialize_to_buffer<Commitment>(perm_main_mem_c, Transcript::proof_data);
@@ -2647,6 +2751,7 @@ class AvmFlavor {
             serialize_to_buffer<Commitment>(perm_main_mem_ind_addr_d, Transcript::proof_data);
             serialize_to_buffer<Commitment>(lookup_byte_lengths, Transcript::proof_data);
             serialize_to_buffer<Commitment>(lookup_byte_operations, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(lookup_cd_value, Transcript::proof_data);
             serialize_to_buffer<Commitment>(lookup_opcode_gas, Transcript::proof_data);
             serialize_to_buffer<Commitment>(range_check_l2_gas_hi, Transcript::proof_data);
             serialize_to_buffer<Commitment>(range_check_l2_gas_lo, Transcript::proof_data);
@@ -2688,6 +2793,7 @@ class AvmFlavor {
             serialize_to_buffer<Commitment>(lookup_div_u16_7, Transcript::proof_data);
             serialize_to_buffer<Commitment>(lookup_byte_lengths_counts, Transcript::proof_data);
             serialize_to_buffer<Commitment>(lookup_byte_operations_counts, Transcript::proof_data);
+            serialize_to_buffer<Commitment>(lookup_cd_value_counts, Transcript::proof_data);
             serialize_to_buffer<Commitment>(lookup_opcode_gas_counts, Transcript::proof_data);
             serialize_to_buffer<Commitment>(range_check_l2_gas_hi_counts, Transcript::proof_data);
             serialize_to_buffer<Commitment>(range_check_l2_gas_lo_counts, Transcript::proof_data);
