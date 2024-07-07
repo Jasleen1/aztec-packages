@@ -33,6 +33,7 @@ unconstrained fn compute_encrypted_note_log_oracle<N, M>(
     _ovsk_app: Field,
     _ovpk_m: GrumpkinPoint,
     _ivpk_m: GrumpkinPoint,
+    _recipient: AztecAddress,
     _preimage: [Field; N]
 ) -> [u8; M] {}
 
@@ -43,6 +44,7 @@ unconstrained pub fn compute_encrypted_note_log<N, M>(
     ovsk_app: Field,
     ovpk_m: GrumpkinPoint,
     ivpk_m: GrumpkinPoint,
+    recipient: AztecAddress,
     preimage: [Field; N]
 ) -> [u8; M] {
     compute_encrypted_note_log_oracle(
@@ -52,6 +54,7 @@ unconstrained pub fn compute_encrypted_note_log<N, M>(
         ovsk_app,
         ovpk_m,
         ivpk_m,
+        recipient,
         preimage
     )
 }
@@ -65,6 +68,7 @@ unconstrained fn compute_encrypted_event_log_oracle<N, M>(
     _ovsk_app: Field,
     _ovpk_m: GrumpkinPoint,
     _ivpk_m: GrumpkinPoint,
+    _recipient: AztecAddress,
     _preimage: [Field; N]
 ) -> [u8; M] {}
 
@@ -75,6 +79,7 @@ unconstrained pub fn compute_encrypted_event_log<N, M>(
     ovsk_app: Field,
     ovpk_m: GrumpkinPoint,
     ivpk_m: GrumpkinPoint,
+    recipient: AztecAddress,
     preimage: [Field; N]
 ) -> [u8; M] {
     compute_encrypted_event_log_oracle(
@@ -84,6 +89,7 @@ unconstrained pub fn compute_encrypted_event_log<N, M>(
         ovsk_app,
         ovpk_m,
         ivpk_m,
+        recipient,
         preimage
     )
 }
