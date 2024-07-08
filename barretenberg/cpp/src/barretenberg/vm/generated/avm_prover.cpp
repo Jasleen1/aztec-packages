@@ -27,8 +27,9 @@ void compute_logderivative_rel(const RelationParameters<FF>& relation_parameters
 {
     using Relation = std::tuple_element_t<relation_idx, Flavor::LookupRelations>;
     AVM_TRACK_TIME(
-        Relation::NAME + std::string("_ms"),
+        Relation::NAME + std::string("_µs"),
         (compute_logderivative_inverse<Flavor, Relation>(prover_polynomials, relation_parameters, circuit_size)));
+    // Relation::NAME)));
 
     if constexpr (relation_idx + 1 < std::tuple_size_v<Flavor::LookupRelations>) {
         compute_logderivative_rel<relation_idx + 1, PP>(relation_parameters, prover_polynomials, circuit_size);
