@@ -241,11 +241,11 @@ impl PrivatelyRefundable for TokenNote {
         (Point {
             x: incomplete_fee_payer_point[0],
             y: incomplete_fee_payer_point[1],
-            is_infinite: incomplete_fee_payer_point[2] == 1
+            is_infinite: incomplete_fee_payer_point[2] as bool
         }, Point {
             x: incomplete_user_point[0],
             y: incomplete_user_point[1],
-            is_infinite: incomplete_user_point[2] == 1
+            is_infinite: incomplete_user_point[2] as bool
         })
     }
 
