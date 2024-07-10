@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libcircuit_checker.a CMakeFiles/circuit_checker_objects.dir/ultra_circuit_checker.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libcircuit_checker.a

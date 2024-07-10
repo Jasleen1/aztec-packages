@@ -1,0 +1,3 @@
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/gtest-subbuild/CMakeFiles/gtest-populate.dir
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/gtest-subbuild/CMakeFiles/edit_cache.dir
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/gtest-subbuild/CMakeFiles/rebuild_cache.dir

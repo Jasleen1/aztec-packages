@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../lib/libcrypto_merkle_tree.a CMakeFiles/crypto_merkle_tree_objects.dir/indexed_tree/leaves_cache.cpp.o CMakeFiles/crypto_merkle_tree_objects.dir/nullifier_tree/nullifier_tree.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../lib/libcrypto_merkle_tree.a

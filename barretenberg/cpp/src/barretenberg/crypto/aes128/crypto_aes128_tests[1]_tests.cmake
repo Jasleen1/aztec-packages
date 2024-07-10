@@ -1,0 +1,7 @@
+add_test([=[aes128.verify_cipher]=]  /Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/bin/crypto_aes128_tests [==[--gtest_filter=aes128.verify_cipher]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[aes128.verify_cipher]=]  PROPERTIES WORKING_DIRECTORY /Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[aes128.encrypt_buffer_cbc]=]  /Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/bin/crypto_aes128_tests [==[--gtest_filter=aes128.encrypt_buffer_cbc]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[aes128.encrypt_buffer_cbc]=]  PROPERTIES WORKING_DIRECTORY /Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[aes128.decrypt_buffer_cbc]=]  /Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/bin/crypto_aes128_tests [==[--gtest_filter=aes128.decrypt_buffer_cbc]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[aes128.decrypt_buffer_cbc]=]  PROPERTIES WORKING_DIRECTORY /Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  crypto_aes128_tests_TESTS aes128.verify_cipher aes128.encrypt_buffer_cbc aes128.decrypt_buffer_cbc)

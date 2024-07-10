@@ -1,0 +1,5 @@
+if(EXISTS "/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/flavor/flavor_tests[1]_tests.cmake")
+  include("/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/flavor/flavor_tests[1]_tests.cmake")
+else()
+  add_test(flavor_tests_NOT_BUILT flavor_tests_NOT_BUILT)
+endif()

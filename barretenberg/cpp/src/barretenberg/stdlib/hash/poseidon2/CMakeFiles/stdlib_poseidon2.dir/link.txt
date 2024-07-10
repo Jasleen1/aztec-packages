@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../../lib/libstdlib_poseidon2.a CMakeFiles/stdlib_poseidon2_objects.dir/poseidon2.cpp.o CMakeFiles/stdlib_poseidon2_objects.dir/poseidon2_permutation.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../../lib/libstdlib_poseidon2.a

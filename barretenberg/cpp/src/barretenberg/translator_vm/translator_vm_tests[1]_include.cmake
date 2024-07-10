@@ -1,0 +1,5 @@
+if(EXISTS "/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/translator_vm/translator_vm_tests[1]_tests.cmake")
+  include("/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/translator_vm/translator_vm_tests[1]_tests.cmake")
+else()
+  add_test(translator_vm_tests_NOT_BUILT translator_vm_tests_NOT_BUILT)
+endif()

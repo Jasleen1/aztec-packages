@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../lib/libcrypto_keccak.a CMakeFiles/crypto_keccak_objects.dir/keccak.cpp.o CMakeFiles/crypto_keccak_objects.dir/keccakf1600.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../lib/libcrypto_keccak.a

@@ -1,0 +1,9 @@
+file(REMOVE_RECURSE
+  "../../../../bin/ultra_honk_bench"
+  "../../../../bin/ultra_honk_bench.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/ultra_honk_bench.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../lib/libcrypto_poseidon2.a CMakeFiles/crypto_poseidon2_objects.dir/c_bind.cpp.o CMakeFiles/crypto_poseidon2_objects.dir/poseidon2.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../lib/libcrypto_poseidon2.a

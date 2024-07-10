@@ -1,0 +1,13 @@
+# Target labels
+ msgpack-c
+# Source files and their labels
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/CMakeFiles/msgpack-c
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/CMakeFiles/msgpack-c.rule
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/CMakeFiles/msgpack-c-complete.rule
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/msgpack-c/src/msgpack-c-stamp/msgpack-c-build.rule
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/msgpack-c/src/msgpack-c-stamp/msgpack-c-configure.rule
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/msgpack-c/src/msgpack-c-stamp/msgpack-c-download.rule
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/msgpack-c/src/msgpack-c-stamp/msgpack-c-install.rule
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/msgpack-c/src/msgpack-c-stamp/msgpack-c-mkdir.rule
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/msgpack-c/src/msgpack-c-stamp/msgpack-c-patch.rule
+/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/_deps/msgpack-c/src/msgpack-c-stamp/msgpack-c-update.rule

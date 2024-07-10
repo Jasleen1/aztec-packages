@@ -1,0 +1,5 @@
+if(EXISTS "/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/serialize/serialize-tests_tests[1]_tests.cmake")
+  include("/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/serialize/serialize-tests_tests[1]_tests.cmake")
+else()
+  add_test(serialize-tests_tests_NOT_BUILT serialize-tests_tests_NOT_BUILT)
+endif()

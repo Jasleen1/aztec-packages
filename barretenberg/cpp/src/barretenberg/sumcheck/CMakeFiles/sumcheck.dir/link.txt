@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libsumcheck.a CMakeFiles/sumcheck_objects.dir/instance/prover_instance.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libsumcheck.a

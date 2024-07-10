@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libultra_honk.a CMakeFiles/ultra_honk_objects.dir/decider_prover.cpp.o CMakeFiles/ultra_honk_objects.dir/merge_prover.cpp.o CMakeFiles/ultra_honk_objects.dir/merge_verifier.cpp.o CMakeFiles/ultra_honk_objects.dir/oink_prover.cpp.o CMakeFiles/ultra_honk_objects.dir/oink_verifier.cpp.o CMakeFiles/ultra_honk_objects.dir/ultra_prover.cpp.o CMakeFiles/ultra_honk_objects.dir/ultra_verifier.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libultra_honk.a

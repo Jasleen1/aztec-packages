@@ -4,6 +4,7 @@
 #include "barretenberg/dsl/acir_format/acir_format.hpp"
 #include "barretenberg/plonk/composer/ultra_composer.hpp"
 #include "barretenberg/plonk/proof_system/proving_key/serialize.hpp"
+#include "barretenberg/plonk/proof_system/proving_key/proving_key.hpp"
 #include "barretenberg/plonk/proof_system/verification_key/sol_gen.hpp"
 #include "barretenberg/plonk/proof_system/verification_key/verification_key.hpp"
 #include "barretenberg/stdlib/primitives/circuit_builders/circuit_builders_fwd.hpp"
@@ -85,6 +86,12 @@ void AcirComposer::load_verification_key(bb::plonk::verification_key_data&& data
 {
     verification_key_ = std::make_shared<bb::plonk::verification_key>(std::move(data),
                                                                       srs::get_bn254_crs_factory()->get_verifier_crs());
+}
+
+void AcirComposer::load_proving_key(bb::plonk::proving_key_data&& data)
+{   
+    proving_key_ = std::make_shared<bb::plonk::proving_key>(std::move(data),
+                                                                    srs::get_bn254_crs_factory()->get_prover_crs(builder_.get_circuit_subgroup_size(builder_.get_total_circuit_size())));
 }
 
 bool AcirComposer::verify_proof(std::vector<uint8_t> const& proof)

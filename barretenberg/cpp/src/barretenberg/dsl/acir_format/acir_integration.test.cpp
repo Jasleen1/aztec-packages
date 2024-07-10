@@ -53,11 +53,11 @@ class AcirIntegrationTest : public ::testing::Test {
         return program_stack.back();
     }
 
-    template <class Flavor> bool prove_and_verify_honk(Flavor::CircuitBuilder& builder)
+    template <class Flavor> bool prove_and_verify_honk(typename Flavor::CircuitBuilder& builder)
     {
         using Prover = UltraProver_<Flavor>;
         using Verifier = UltraVerifier_<Flavor>;
-        using VerificationKey = Flavor::VerificationKey;
+        using VerificationKey = typename Flavor::VerificationKey;
 
         Prover prover{ builder };
 #ifdef LOG_SIZES
@@ -74,7 +74,7 @@ class AcirIntegrationTest : public ::testing::Test {
         return verifier.verify_proof(proof);
     }
 
-    template <class Flavor> bool prove_and_verify_plonk(Flavor::CircuitBuilder& builder)
+    template <class Flavor> bool prove_and_verify_plonk(typename Flavor::CircuitBuilder& builder)
     {
         plonk::UltraComposer composer;
 
@@ -142,7 +142,7 @@ TEST_P(AcirIntegrationSingleTest, DISABLED_ProveAndVerifyProgram)
 {
     using Flavor = MegaFlavor;
     // using Flavor = bb::plonk::flavor::Ultra;
-    using Builder = Flavor::CircuitBuilder;
+    using Builder = typename Flavor::CircuitBuilder;
 
     std::string test_name = GetParam();
     info("Test: ", test_name);
@@ -371,7 +371,7 @@ INSTANTIATE_TEST_SUITE_P(AcirTests,
 TEST_P(AcirIntegrationFoldingTest, DISABLED_ProveAndVerifyProgramStack)
 {
     using Flavor = MegaFlavor;
-    using Builder = Flavor::CircuitBuilder;
+    using Builder = typename Flavor::CircuitBuilder;
 
     std::string test_name = GetParam();
     info("Test: ", test_name);
@@ -396,7 +396,7 @@ TEST_P(AcirIntegrationFoldingTest, DISABLED_ProveAndVerifyProgramStack)
 TEST_P(AcirIntegrationFoldingTest, DISABLED_FoldAndVerifyProgramStack)
 {
     using Flavor = MegaFlavor;
-    using Builder = Flavor::CircuitBuilder;
+    using Builder = typename Flavor::CircuitBuilder;
 
     std::string test_name = GetParam();
     auto program_stack = get_program_stack_data_from_test_file(
@@ -436,7 +436,7 @@ INSTANTIATE_TEST_SUITE_P(AcirTests,
 TEST_F(AcirIntegrationTest, DISABLED_UpdateAcirCircuit)
 {
     using Flavor = MegaFlavor;
-    using Builder = Flavor::CircuitBuilder;
+    using Builder = typename Flavor::CircuitBuilder;
 
     std::string test_name = "6_array"; // arbitrary program with RAM gates
     auto acir_program = get_program_data_from_test_file(

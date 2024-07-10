@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../lib/libsimple_example.a CMakeFiles/simple_example_objects.dir/c_bind.cpp.o CMakeFiles/simple_example_objects.dir/simple.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../lib/libsimple_example.a

@@ -5,6 +5,7 @@
 #include "barretenberg/dsl/acir_format/acir_format.hpp"
 #include "barretenberg/honk/proof_system/types/proof.hpp"
 #include "barretenberg/plonk/proof_system/proving_key/serialize.hpp"
+#include "barretenberg/plonk/proof_system/proving_key/proving_key.hpp"
 #include "barretenberg/stdlib/honk_recursion/verifier/client_ivc_recursive_verifier.hpp"
 #ifndef DISABLE_AZTEC_VM
 #include "barretenberg/vm/avm_trace/avm_common.hpp"
@@ -27,6 +28,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <chrono>
 
 using namespace bb;
 
@@ -165,10 +167,10 @@ bool proveAndVerify(const std::string& bytecodePath, const std::string& witnessP
 template <IsUltraFlavor Flavor>
 bool proveAndVerifyHonkAcirFormat(acir_format::AcirFormat constraint_system, acir_format::WitnessVector witness)
 {
-    using Builder = Flavor::CircuitBuilder;
+    using Builder = typename Flavor::CircuitBuilder;
     using Prover = UltraProver_<Flavor>;
     using Verifier = UltraVerifier_<Flavor>;
-    using VerificationKey = Flavor::VerificationKey;
+    using VerificationKey = typename Flavor::VerificationKey;
 
     bool honk_recursion = false;
     if constexpr (IsAnyOf<Flavor, UltraFlavor>) {
@@ -243,7 +245,7 @@ bool proveAndVerifyHonkProgram(const std::string& bytecodePath, const std::strin
 bool foldAndVerifyProgram(const std::string& bytecodePath, const std::string& witnessPath)
 {
     using Flavor = MegaFlavor; // This is the only option
-    using Builder = Flavor::CircuitBuilder;
+    using Builder = typename Flavor::CircuitBuilder;
 
     init_bn254_crs(1 << 18);
     init_grumpkin_crs(1 << 14);
@@ -283,7 +285,7 @@ void client_ivc_prove_output_all(const std::string& bytecodePath,
                                  const std::string& outputPath)
 {
     using Flavor = MegaFlavor; // This is the only option
-    using Builder = Flavor::CircuitBuilder;
+    using Builder = typename Flavor::CircuitBuilder;
     using ECCVMVK = ECCVMFlavor::VerificationKey;
     using TranslatorVK = TranslatorFlavor::VerificationKey;
 
@@ -410,17 +412,47 @@ void prove_tube(const std::string& outputPath)
  * @param recursive Whether to use recursive proof generation of non-recursive
  * @param outputPath Path to write the proof to
  */
-void prove(const std::string& bytecodePath, const std::string& witnessPath, const std::string& outputPath)
-{
+void prove(const std::string& bytecodePath, const std::string& witnessPath, const std::string& outputPath)//, const std::string& pk_path="empty")
+{   
+
+
+    auto start = std::chrono::high_resolution_clock::now();
     auto constraint_system = get_constraint_system(bytecodePath, /*honk_recursion=*/false);
     auto witness = get_witness(witnessPath);
-
+    // std::cout << "test 1" << std::endl;
     acir_proofs::AcirComposer acir_composer{ 0, verbose_logging };
+    // std::cout << "test 2" << std::endl;
     acir_composer.create_circuit(constraint_system, witness);
+    // std::cout << "test 3" << std::endl;
     init_bn254_crs(acir_composer.get_dyadic_circuit_size());
+    // std::cout << "test 4" << std::endl;
+    // if (pk_path=="empty") {
+    //     std::cout << "EMpTy" << std::endl;
+        
+    //     acir_composer.init_proving_key();
+    // }
+    // else {
+    //     auto data_buffer = read_file(pk_path);
+    //     std::cout << "test 5" << std::endl;
+    //     auto pk_data = from_buffer<bb::plonk::proving_key_data>(data_buffer);
+    //     std::cout << "test 6" << std::endl;
+    //     acir_composer.load_proving_key(std::move(pk_data));
+    //     std::cout << "test 7" << std::endl;
+    // }
+    
     acir_composer.init_proving_key();
-    auto proof = acir_composer.create_proof();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+    auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+    std::cout << "Init," << milliseconds << std::endl;
 
+    auto start_proving = std::chrono::high_resolution_clock::now();
+    auto proof = acir_composer.create_proof();
+    auto end_proving = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration_proving = end_proving - start_proving;
+    auto milliseconds_proving = std::chrono::duration_cast<std::chrono::milliseconds>(duration_proving).count();
+    // Output the duration
+    std::cout << "Proving," << milliseconds_proving << std::endl;
     if (outputPath == "-") {
         writeRawBytesToStdout(proof);
         vinfo("proof written to stdout");
@@ -754,7 +786,7 @@ bool avm_verify(const std::filesystem::path& proof_path, const std::filesystem::
 template <IsUltraFlavor Flavor>
 void prove_honk(const std::string& bytecodePath, const std::string& witnessPath, const std::string& outputPath)
 {
-    using Builder = Flavor::CircuitBuilder;
+    using Builder = typename Flavor::CircuitBuilder;
     using Prover = UltraProver_<Flavor>;
 
     bool honk_recursion = false;
@@ -800,7 +832,7 @@ void prove_honk(const std::string& bytecodePath, const std::string& witnessPath,
  */
 template <IsUltraFlavor Flavor> bool verify_honk(const std::string& proof_path, const std::string& vk_path)
 {
-    using VerificationKey = Flavor::VerificationKey;
+    using VerificationKey = typename Flavor::VerificationKey;
     using Verifier = UltraVerifier_<Flavor>;
     using VerifierCommitmentKey = bb::VerifierCommitmentKey<curve::BN254>;
 
@@ -830,9 +862,9 @@ template <IsUltraFlavor Flavor> bool verify_honk(const std::string& proof_path, 
  */
 template <IsUltraFlavor Flavor> void write_vk_honk(const std::string& bytecodePath, const std::string& outputPath)
 {
-    using Builder = Flavor::CircuitBuilder;
+    using Builder = typename Flavor::CircuitBuilder;
     using ProverInstance = ProverInstance_<Flavor>;
-    using VerificationKey = Flavor::VerificationKey;
+    using VerificationKey = typename Flavor::VerificationKey;
 
     bool honk_recursion = false;
     if constexpr (IsAnyOf<Flavor, UltraFlavor>) {
@@ -899,7 +931,7 @@ void proof_as_fields_honk(const std::string& proof_path, const std::string& outp
  */
 template <IsUltraFlavor Flavor> void vk_as_fields_honk(const std::string& vk_path, const std::string& output_path)
 {
-    using VerificationKey = Flavor::VerificationKey;
+    using VerificationKey = typename Flavor::VerificationKey;
 
     auto verification_key = std::make_shared<VerificationKey>(from_buffer<VerificationKey>(read_file(vk_path)));
     std::vector<bb::fr> data = verification_key->to_field_elements();
@@ -1023,7 +1055,8 @@ int main(int argc, char* argv[])
 
         if (command == "prove") {
             std::string output_path = get_option(args, "-o", "./proofs/proof");
-            prove(bytecode_path, witness_path, output_path);
+            // std::string input_path = get_option(args, "-p", "./target/pk");
+            prove(bytecode_path, witness_path, output_path);//, input_path);
         } else if (command == "prove_output_all") {
             std::string output_path = get_option(args, "-o", "./proofs");
             prove_output_all(bytecode_path, witness_path, output_path);

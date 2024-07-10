@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libhonk.a CMakeFiles/honk_objects.dir/utils/testing.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libhonk.a

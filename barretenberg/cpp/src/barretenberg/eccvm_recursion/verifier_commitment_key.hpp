@@ -8,8 +8,8 @@ namespace bb {
  * @tparam Builder
  */
 template <typename Curve> class VerifierCommitmentKey {
-    using Builder = Curve::Builder;
-    using Commitment = Curve::AffineElement;
+    using Builder = typename Curve::Builder;
+    using Commitment = typename Curve::AffineElement;
     using NativeEmbeddedCurve = typename Builder::EmbeddedCurve;
 
   public:

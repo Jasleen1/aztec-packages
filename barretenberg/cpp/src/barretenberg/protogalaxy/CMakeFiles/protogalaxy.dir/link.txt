@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libprotogalaxy.a CMakeFiles/protogalaxy_objects.dir/decider_verifier.cpp.o CMakeFiles/protogalaxy_objects.dir/protogalaxy_prover_mega.cpp.o CMakeFiles/protogalaxy_objects.dir/protogalaxy_prover_ultra.cpp.o CMakeFiles/protogalaxy_objects.dir/protogalaxy_verifier.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libprotogalaxy.a

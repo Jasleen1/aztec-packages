@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../lib/libstdlib_plonk_recursion.a CMakeFiles/stdlib_plonk_recursion_objects.dir/verifier/verifier.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../lib/libstdlib_plonk_recursion.a

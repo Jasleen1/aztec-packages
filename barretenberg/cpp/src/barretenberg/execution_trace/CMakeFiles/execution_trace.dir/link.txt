@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libexecution_trace.a CMakeFiles/execution_trace_objects.dir/execution_trace.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libexecution_trace.a

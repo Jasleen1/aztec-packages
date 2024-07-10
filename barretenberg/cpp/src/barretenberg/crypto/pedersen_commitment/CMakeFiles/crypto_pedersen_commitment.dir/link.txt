@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../lib/libcrypto_pedersen_commitment.a CMakeFiles/crypto_pedersen_commitment_objects.dir/c_bind.cpp.o CMakeFiles/crypto_pedersen_commitment_objects.dir/pedersen.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../lib/libcrypto_pedersen_commitment.a

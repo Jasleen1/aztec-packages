@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../lib/libcrypto_blake2s.a CMakeFiles/crypto_blake2s_objects.dir/blake2s.cpp.o CMakeFiles/crypto_blake2s_objects.dir/c_bind.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../lib/libcrypto_blake2s.a

@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../lib/libcrypto_blake3s_full.a CMakeFiles/crypto_blake3s_full_objects.dir/blake3s.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../lib/libcrypto_blake3s_full.a

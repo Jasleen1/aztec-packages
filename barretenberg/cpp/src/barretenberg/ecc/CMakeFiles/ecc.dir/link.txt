@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libecc.a CMakeFiles/ecc_objects.dir/curves/grumpkin/c_bind.cpp.o CMakeFiles/ecc_objects.dir/curves/secp256k1/c_bind.cpp.o CMakeFiles/ecc_objects.dir/fields/field_conversion.cpp.o CMakeFiles/ecc_objects.dir/scalar_multiplication/process_buckets.cpp.o CMakeFiles/ecc_objects.dir/scalar_multiplication/runtime_states.cpp.o CMakeFiles/ecc_objects.dir/scalar_multiplication/scalar_multiplication.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libecc.a

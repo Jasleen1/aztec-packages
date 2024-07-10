@@ -356,6 +356,8 @@ class ECCVMFlavor {
      */
     class ProverPolynomials : public AllEntities<Polynomial> {
       public:
+      // Member variable to store msm_rows
+        std::vector<ECCVMMSMMBuilder::MSMRow> msm_rows;
         // Define all operations as default, except copy construction/assignment
         ProverPolynomials() = default;
         ProverPolynomials& operator=(const ProverPolynomials&) = delete;
@@ -484,9 +486,9 @@ class ECCVMFlavor {
             const std::vector<MSM> msms = builder.get_msms();
             const auto point_table_rows =
                 ECCVMPointTablePrecomputationBuilder::compute_rows(CircuitBuilder::get_flattened_scalar_muls(msms));
-            const auto [msm_rows, point_table_read_counts] = ECCVMMSMMBuilder::compute_rows(
+            const auto [local_msm_rows, point_table_read_counts] = ECCVMMSMMBuilder::compute_rows(
                 msms, builder.get_number_of_muls(), builder.op_queue->get_num_msm_rows());
-
+            this->msm_rows = local_msm_rows;
             const size_t num_rows = std::max({ point_table_rows.size(), msm_rows.size(), transcript_rows.size() });
             const auto log_num_rows = static_cast<size_t>(numeric::get_msb64(num_rows));
             const size_t dyadic_num_rows = 1UL << (log_num_rows + (1UL << log_num_rows == num_rows ? 0 : 1));
@@ -593,40 +595,40 @@ class ECCVMFlavor {
             // compute polynomials for the msm columns
             run_loop_in_parallel(msm_rows.size(), [&](size_t start, size_t end) {
                 for (size_t i = start; i < end; i++) {
-                    msm_transition[i] = static_cast<int>(msm_rows[i].msm_transition);
-                    msm_add[i] = static_cast<int>(msm_rows[i].q_add);
-                    msm_double[i] = static_cast<int>(msm_rows[i].q_double);
-                    msm_skew[i] = static_cast<int>(msm_rows[i].q_skew);
-                    msm_accumulator_x[i] = msm_rows[i].accumulator_x;
-                    msm_accumulator_y[i] = msm_rows[i].accumulator_y;
-                    msm_pc[i] = msm_rows[i].pc;
-                    msm_size_of_msm[i] = msm_rows[i].msm_size;
-                    msm_count[i] = msm_rows[i].msm_count;
-                    msm_round[i] = msm_rows[i].msm_round;
-                    msm_add1[i] = static_cast<int>(msm_rows[i].add_state[0].add);
-                    msm_add2[i] = static_cast<int>(msm_rows[i].add_state[1].add);
-                    msm_add3[i] = static_cast<int>(msm_rows[i].add_state[2].add);
-                    msm_add4[i] = static_cast<int>(msm_rows[i].add_state[3].add);
-                    msm_x1[i] = msm_rows[i].add_state[0].point.x;
-                    msm_y1[i] = msm_rows[i].add_state[0].point.y;
-                    msm_x2[i] = msm_rows[i].add_state[1].point.x;
-                    msm_y2[i] = msm_rows[i].add_state[1].point.y;
-                    msm_x3[i] = msm_rows[i].add_state[2].point.x;
-                    msm_y3[i] = msm_rows[i].add_state[2].point.y;
-                    msm_x4[i] = msm_rows[i].add_state[3].point.x;
-                    msm_y4[i] = msm_rows[i].add_state[3].point.y;
-                    msm_collision_x1[i] = msm_rows[i].add_state[0].collision_inverse;
-                    msm_collision_x2[i] = msm_rows[i].add_state[1].collision_inverse;
-                    msm_collision_x3[i] = msm_rows[i].add_state[2].collision_inverse;
-                    msm_collision_x4[i] = msm_rows[i].add_state[3].collision_inverse;
-                    msm_lambda1[i] = msm_rows[i].add_state[0].lambda;
-                    msm_lambda2[i] = msm_rows[i].add_state[1].lambda;
-                    msm_lambda3[i] = msm_rows[i].add_state[2].lambda;
-                    msm_lambda4[i] = msm_rows[i].add_state[3].lambda;
-                    msm_slice1[i] = msm_rows[i].add_state[0].slice;
-                    msm_slice2[i] = msm_rows[i].add_state[1].slice;
-                    msm_slice3[i] = msm_rows[i].add_state[2].slice;
-                    msm_slice4[i] = msm_rows[i].add_state[3].slice;
+                    msm_transition[i] = static_cast<int>(this->msm_rows[i].msm_transition);
+                    msm_add[i] = static_cast<int>(this->msm_rows[i].q_add);
+                    msm_double[i] = static_cast<int>(this->msm_rows[i].q_double);
+                    msm_skew[i] = static_cast<int>(this->msm_rows[i].q_skew);
+                    msm_accumulator_x[i] = this->msm_rows[i].accumulator_x;
+                    msm_accumulator_y[i] = this->msm_rows[i].accumulator_y;
+                    msm_pc[i] = this->msm_rows[i].pc;
+                    msm_size_of_msm[i] = this->msm_rows[i].msm_size;
+                    msm_count[i] = this->msm_rows[i].msm_count;
+                    msm_round[i] = this->msm_rows[i].msm_round;
+                    msm_add1[i] = static_cast<int>(this->msm_rows[i].add_state[0].add);
+                    msm_add2[i] = static_cast<int>(this->msm_rows[i].add_state[1].add);
+                    msm_add3[i] = static_cast<int>(this->msm_rows[i].add_state[2].add);
+                    msm_add4[i] = static_cast<int>(this->msm_rows[i].add_state[3].add);
+                    msm_x1[i] = this->msm_rows[i].add_state[0].point.x;
+                    msm_y1[i] = this->msm_rows[i].add_state[0].point.y;
+                    msm_x2[i] = this->msm_rows[i].add_state[1].point.x;
+                    msm_y2[i] = this->msm_rows[i].add_state[1].point.y;
+                    msm_x3[i] = this->msm_rows[i].add_state[2].point.x;
+                    msm_y3[i] = this->msm_rows[i].add_state[2].point.y;
+                    msm_x4[i] = this->msm_rows[i].add_state[3].point.x;
+                    msm_y4[i] = this->msm_rows[i].add_state[3].point.y;
+                    msm_collision_x1[i] = this->msm_rows[i].add_state[0].collision_inverse;
+                    msm_collision_x2[i] = this->msm_rows[i].add_state[1].collision_inverse;
+                    msm_collision_x3[i] = this->msm_rows[i].add_state[2].collision_inverse;
+                    msm_collision_x4[i] = this->msm_rows[i].add_state[3].collision_inverse;
+                    msm_lambda1[i] = this->msm_rows[i].add_state[0].lambda;
+                    msm_lambda2[i] = this->msm_rows[i].add_state[1].lambda;
+                    msm_lambda3[i] = this->msm_rows[i].add_state[2].lambda;
+                    msm_lambda4[i] = this->msm_rows[i].add_state[3].lambda;
+                    msm_slice1[i] = this->msm_rows[i].add_state[0].slice;
+                    msm_slice2[i] = this->msm_rows[i].add_state[1].slice;
+                    msm_slice3[i] = this->msm_rows[i].add_state[2].slice;
+                    msm_slice4[i] = this->msm_rows[i].add_state[3].slice;
                 }
             });
             this->set_shifted();

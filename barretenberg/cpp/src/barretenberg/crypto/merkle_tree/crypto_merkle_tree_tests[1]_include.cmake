@@ -1,0 +1,5 @@
+if(EXISTS "/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/crypto/merkle_tree/crypto_merkle_tree_tests[1]_tests.cmake")
+  include("/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/crypto/merkle_tree/crypto_merkle_tree_tests[1]_tests.cmake")
+else()
+  add_test(crypto_merkle_tree_tests_NOT_BUILT crypto_merkle_tree_tests_NOT_BUILT)
+endif()

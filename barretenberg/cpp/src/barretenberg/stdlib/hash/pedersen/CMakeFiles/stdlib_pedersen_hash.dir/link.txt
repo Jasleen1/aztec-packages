@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../../lib/libstdlib_pedersen_hash.a CMakeFiles/stdlib_pedersen_hash_objects.dir/pedersen.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../../lib/libstdlib_pedersen_hash.a

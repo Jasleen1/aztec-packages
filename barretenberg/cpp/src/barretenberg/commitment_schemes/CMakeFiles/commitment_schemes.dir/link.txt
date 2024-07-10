@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libcommitment_schemes.a CMakeFiles/commitment_schemes_objects.dir/gemini/gemini.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libcommitment_schemes.a

@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libpolynomials.a CMakeFiles/polynomials_objects.dir/evaluation_domain.cpp.o CMakeFiles/polynomials_objects.dir/polynomial.cpp.o CMakeFiles/polynomials_objects.dir/polynomial_arithmetic.cpp.o CMakeFiles/polynomials_objects.dir/polynomial_store.cpp.o CMakeFiles/polynomials_objects.dir/polynomial_store_cache.cpp.o CMakeFiles/polynomials_objects.dir/polynomial_store_wasm.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libpolynomials.a

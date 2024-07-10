@@ -1,0 +1,5 @@
+if(EXISTS "/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/commitment_schemes_recursion/commitment_schemes_recursion_tests[1]_tests.cmake")
+  include("/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/commitment_schemes_recursion/commitment_schemes_recursion_tests[1]_tests.cmake")
+else()
+  add_test(commitment_schemes_recursion_tests_NOT_BUILT commitment_schemes_recursion_tests_NOT_BUILT)
+endif()

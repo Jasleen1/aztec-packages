@@ -31,10 +31,10 @@ template <typename BuilderType> class TranslatorRecursiveFlavor_ {
     using CircuitBuilder = BuilderType;
     using Curve = stdlib::bn254<CircuitBuilder>;
     using PCS = KZG<Curve>;
-    using GroupElement = Curve::Element;
-    using Commitment = Curve::AffineElement;
-    using FF = Curve::ScalarField;
-    using BF = Curve::BaseField;
+    using GroupElement = typename Curve::Element;
+    using Commitment = typename Curve::AffineElement;
+    using FF = typename Curve::ScalarField;
+    using BF = typename Curve::BaseField;
     using RelationSeparator = FF;
 
     using NativeFlavor = TranslatorFlavor;

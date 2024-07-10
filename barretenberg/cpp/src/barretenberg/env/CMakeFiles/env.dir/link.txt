@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libenv.a CMakeFiles/env_objects.dir/data_store.cpp.o CMakeFiles/env_objects.dir/hardware_concurrency.cpp.o CMakeFiles/env_objects.dir/logstr.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libenv.a

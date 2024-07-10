@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../../../lib/libstdlib_pedersen_commitment.a CMakeFiles/stdlib_pedersen_commitment_objects.dir/pedersen.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../../../lib/libstdlib_pedersen_commitment.a

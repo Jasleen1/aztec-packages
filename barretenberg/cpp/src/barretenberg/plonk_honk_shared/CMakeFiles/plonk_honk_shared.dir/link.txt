@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libplonk_honk_shared.a CMakeFiles/plonk_honk_shared_objects.dir/instance_inspector.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libplonk_honk_shared.a

@@ -1,0 +1,5 @@
+if(EXISTS "/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/plonk_honk_shared/plonk_honk_shared_tests[1]_tests.cmake")
+  include("/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/plonk_honk_shared/plonk_honk_shared_tests[1]_tests.cmake")
+else()
+  add_test(plonk_honk_shared_tests_NOT_BUILT plonk_honk_shared_tests_NOT_BUILT)
+endif()

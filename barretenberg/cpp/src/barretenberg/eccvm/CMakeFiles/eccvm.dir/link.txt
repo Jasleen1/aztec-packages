@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libeccvm.a CMakeFiles/eccvm_objects.dir/eccvm_prover.cpp.o CMakeFiles/eccvm_objects.dir/eccvm_trace_checker.cpp.o CMakeFiles/eccvm_objects.dir/eccvm_verifier.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libeccvm.a

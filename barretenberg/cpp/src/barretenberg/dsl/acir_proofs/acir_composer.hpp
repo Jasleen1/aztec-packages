@@ -1,5 +1,6 @@
 #pragma once
 #include <barretenberg/dsl/acir_format/acir_format.hpp>
+#include "barretenberg/plonk/proof_system/proving_key/proving_key.hpp"
 
 namespace acir_proofs {
 
@@ -26,6 +27,7 @@ class AcirComposer {
     std::vector<uint8_t> create_proof();
 
     void load_verification_key(bb::plonk::verification_key_data&& data);
+    void load_proving_key(bb::plonk::proving_key_data&& data);
 
     std::shared_ptr<bb::plonk::verification_key> init_verification_key();
 

@@ -1,0 +1,5 @@
+if(EXISTS "/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/crypto/blake3s_full/crypto_blake3s_full_tests[1]_tests.cmake")
+  include("/Users/harjasleenmalvai/Documents/phdProjects/parsing_proofs/aztec-packages/barretenberg/cpp/src/barretenberg/crypto/blake3s_full/crypto_blake3s_full_tests[1]_tests.cmake")
+else()
+  add_test(crypto_blake3s_full_tests_NOT_BUILT crypto_blake3s_full_tests_NOT_BUILT)
+endif()

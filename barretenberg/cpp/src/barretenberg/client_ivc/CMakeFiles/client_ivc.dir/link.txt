@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc ../../../lib/libclient_ivc.a CMakeFiles/client_ivc_objects.dir/client_ivc.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib ../../../lib/libclient_ivc.a

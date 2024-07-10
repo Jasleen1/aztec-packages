@@ -24,10 +24,10 @@ template <typename BuilderType> class ECCVMRecursiveFlavor_ {
   public:
     using CircuitBuilder = BuilderType; // determines the arithmetisation of recursive verifier
     using Curve = stdlib::grumpkin<CircuitBuilder>;
-    using Commitment = Curve::AffineElement;
-    using GroupElement = Curve::Element;
-    using FF = Curve::ScalarField;
-    using BF = Curve::BaseField;
+    using Commitment = typename Curve::AffineElement;
+    using GroupElement = typename Curve::Element;
+    using FF = typename Curve::ScalarField;
+    using BF = typename Curve::BaseField;
     using RelationSeparator = FF;
     using NativeFlavor = ECCVMFlavor;
     using NativeVerificationKey = NativeFlavor::VerificationKey;
