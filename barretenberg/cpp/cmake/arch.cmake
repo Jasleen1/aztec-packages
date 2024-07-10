@@ -7,5 +7,5 @@ endif()
 
 if(NOT WASM AND NOT APPLE AND NOT ARM)
     message(STATUS "Target architecture: ${TARGET_ARCH}")
-    add_compile_options(-march=${TARGET_ARCH})
+    add_compile_options(-march=native)
 endif()
